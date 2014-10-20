@@ -16,7 +16,7 @@ fn=fieldnames(elan.tiers); %fieldnames = tier names
 %cla;
 gcf;
 clf;
-set(gcf,'ActivePositionProperty','OuterPosition');
+set(gcf,'OuterPosition');
 axes('OuterPosition',[.1  .05  .9  .9]);
 %f = gcf;
 %set(f,'CurrentAxes',gca)
