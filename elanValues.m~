@@ -13,7 +13,10 @@ function OUT = elanValues(elan, tier, order)
 % OUTPUT ARGUMENTS:
 % OUT = cell structure with annotation values from the tier. 
 % 
-% Uses data structure of the SALEM 0.1 beta toolbox. 
+% Example: vals = elanValue(myelan, 'TierName', 1);
+% This produces a 
+%
+% Uses data structure of the SALEM 0.1beta toolbox. 
 %
 % Tommi Himberg, BRU / Aalto University. Last changed 23.10.2014 
 
@@ -39,11 +42,11 @@ for i = 2:lg
     end
 end
 
-% variable 'labs' now has all unique labels. 
+% variable 'values' now has all unique labels. 
 
-if order == 1
+if order == 1  % alphabetise
     OUT = sort(values)';
-else
+else % order of appearance
     OUT = values';
 end
 
