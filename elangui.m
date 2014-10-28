@@ -53,6 +53,15 @@ function elangui_OpeningFcn(hObject, eventdata, handles, varargin)
 % handles    structure with handles and user data (see GUIDATA)
 % varargin   command line arguments to elangui (see VARARGIN)
 
+handles.data = varargin;
+handles.colors = [0 0 1; 0.4 0.8 1;... % db lb
+    0 0.6  0; 0 1 0;... % dg lg
+    1 0 0; 1 0.5 0.5;... % dr lr
+    0.8 0.8 0; 1 1 0;... % dy ly
+    0.4 0 0.4; 1 0 1;... % dm lm 
+    1 1 1]; % w
+
+
 % Choose default command line output for elangui
 handles.output = hObject;
 
@@ -205,6 +214,10 @@ function listbox2_Callback(hObject, eventdata, handles)
 % hObject    handle to listbox2 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+handles.tiers = varargin.tiers; 
+
+contents = cellstr(get(hObject, 'String'));
+handles.seltier = contents{get(hObject, 'Value')};
 
 % Hints: contents = cellstr(get(hObject,'String')) returns listbox2 contents as cell array
 %        contents{get(hObject,'Value')} returns selected item from listbox2
