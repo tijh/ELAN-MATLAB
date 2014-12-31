@@ -1,6 +1,6 @@
 function output = elanTotalTimes(elan, tier, abs) 
 % Extracts the total durations per annotation label in a tier of ELAN file.
-%
+% 
 % function output = elanTotalTimes(elan, tier, abs) 
 % 
 % Inputs:
@@ -16,16 +16,16 @@ function output = elanTotalTimes(elan, tier, abs)
 % corresponding durations / proportions. 
 % 
 % Example: 
-%
+% 
 % mytimes = elanTotalTimes(mydata, 'P1_sound', 2); 
-%
+% 
 % This produces structure mytimes, reads the P1_sound tier from mydata,
 % which is a MATLAB structure produced e.g. by elanReadFile. Option 2 gives
 % the times as proportion of total duration of the tier.
-%
+% 
 % Uses the data structure of SALEM Toolbox, so the structure needs the 
 % target tier and AnnotationValid and ElanFile tiers.
-%
+% 
 % SALEM functions used: 
 %
 % Tommi Himberg, BRU Aalto University - last changed 20.10.2014
