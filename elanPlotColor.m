@@ -7,7 +7,11 @@
 % their keys. Variable 'colors' is an array with color codes (n,3), from which the
 % colors are picked to represent annotations. 
 %
-% Last edited (TH) 23.5.2014
+% Change 31.12.2014: AnnotationValid-tier no longer needed, now uses the
+% start and stop values from the field elan.range instead (produced by
+% newer version of elanRead).
+% 
+% Last edited (TH) 31.12.2014
 
 
 function elanPlotColor(elan, codes, colors, optionaltitle)
@@ -23,8 +27,8 @@ axes('OuterPosition',[.1  .05  .9  .9]);
 set(gca,'YTickLabel',[],'YTick',[],'YLim',[0.5 length(fn)+0.5]);
 set(get(gca,'XLabel'),'String','seconds');
 hold on;
-minx=max([elan.tiers.AnnotationValid.stop]);% find end point of one annotation
-maxx=min([elan.tiers.AnnotationValid.start]);% find start point of one annotation
+minx=max([elan.range(2)]);% find end point of one annotation
+maxx=min([elan.range(1)]);% find start point of one annotation
 for i=1:length(fn) %find first annotation on timeline for all tiers
 	f=elan.tiers.(fn{i});
 	if (~isempty(f))
