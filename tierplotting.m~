@@ -18,17 +18,13 @@
 %
 % Add % in front of those lines of code you don't need (this makes the lines 
 % into "comments" that MATLAB will ignore when running the script), or 
-% remove %'s from lines you do need. Comments, or text that is ignored, 
-% is green; the active code is black and purple. 
-%
-% Places where you need to make edits (usually to input tier names and 
-% annotation values) are under headings "EDIT THIS:"; lines that you should
-% not touch are marked by "DON'T EDIT THIS". 
+% remove %'s from lines you do need. Comments, piePlaces where you need to make edits
+% (usually to input tier names and annotation values) are under "EDIT
+% THIS:"; lines that you should not 
 %
 % Please see tierplotting.pdf for more details. 
 %
-% Tommi Himberg 
-% Last edit: 15.1. 2015
+%
 %
 %% 1. Load ELAN-file
 %
