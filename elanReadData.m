@@ -1,4 +1,4 @@
-% function elan=elanRead(fn, prevElan, offset)
+% function elan=elanReadData(fn, prevElan, offset)
 % 
 % arguments: fn: filename of elan file as string (can also be a cell array of filename-strings)
 %            prevElan: internal, do not use!
@@ -13,12 +13,12 @@
 % but only if you are working with a single file.
 %
 % usage:
-% elan=elanReadFile('example.eaf')
+% elan=elanReadData('example.eaf')
 %
 % supports loading of several files at once:
-% elan=elanReadFile({'example.eaf','VP01-face-1.eaf'});
+% elan=elanReadData({'example.eaf','VP01-face-1.eaf'});
 %
-% EDIT 31.1.2014 (TH) Added field elan.range to include the start and stop
+% EDIT 16.1.2015 (TH) Added field elan.range to include the start and stop
 % times so that the AnnotationValid-tier is not needed in plotting. 
 
 
