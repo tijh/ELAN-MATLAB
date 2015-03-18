@@ -110,7 +110,25 @@ values = elanValues(data, 'toplot', 1)
 %
 % The colors are defined as RGB-codes, each component ranging from 0 to 1. 
 % 
-% Some example colors: Red = 1,0,0, Green = 0,1,0, Blue = 0,0,1, White = 1,1,1
+% Some example colors: 
+% Red = 1 0 0 
+% Green = 0 1 0 
+% Blue = 0 0 1 
+%
+% White = 1 1 1
+% Light grey = 0.8 0.8 0.8
+% Dark grey = 0.2 0.2 0.2
+% Black = 0 0 0 
+% 
+% Cyan = 0 1 1 
+% Magenta = 1 0 1
+% Yellow = 1 1 0
+%
+% Light blue = 0.4 0.8 1
+% Light red = 1 0.5 0.5
+%
+% You can easily make your own palettes of how ever many colors you need by
+% editing any of the examples below.
 %
 %
 % UNCOMMENT THE "colors = ..." PART FROM ONE OF THE FOLLOWING, MAKE SURE
