@@ -176,7 +176,7 @@ associations('O') = 3;
 
 %
 %
-%% Plot 
+%% 6. Plot 
 % 
 % Almost there. :)
 % If you want, you can add a title to the plot by editing the name below:
@@ -189,5 +189,33 @@ plotTitle = 'MyTitle';
 % File -> Save as. 
 
 elanPlotColors(data, associations, colors, plotTitle)
+
+%% 7. Plot a section of data 
+
+% To plot just a segment of the data instead of the whole file, use the
+% following script. 
+%
+
+%% 7a. Cut a slice
+
+% First, run steps 1-5 as usual, then cut the desired "slice" of the data:
+
+data2 = elanSlice(data, 120, 600); % 120 and 600 are the start and 
+                                   % stop times in seconds (you can enter
+                                   % time in minutes by multiplying by 60, 
+                                   % e.g. data2 = elanSlice(data, 1*60, 15*60);
+
+                                   
+                                   
+%% 7b. Plot the slice
+                                   
+% This simply re-uses the associations and colors from above:
+
+plotTitle = 'MyTitle';
+
+elanPlotColors(data2, associations, colors, plotTitle) % NB data2 
+                                   
+
+
 
 

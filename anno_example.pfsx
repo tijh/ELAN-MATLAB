@@ -27,15 +27,71 @@
         <String>C ALL PULSE</String>
         <String>Shared PULSE ALL</String>
     </prefList>
+    <pref key="ActiveVideoRecognizerName">
+        <String>Human motion analysis and annotation</String>
+    </pref>
     <pref key="LayoutManager.VisibleMultiTierViewer">
         <String>mpi.eudico.client.annotator.viewer.TimeLineViewer</String>
+    </pref>
+    <prefGroup key="Text-to-Speech alignment">
+        <pref key="model">
+            <String>English</String>
+        </pref>
+    </prefGroup>
+    <prefList key="CommentViewer.Columns.Order">
+        <String>Start Time</String>
+        <String>End Time</String>
+        <String>Tier</String>
+        <String>Initials</String>
+        <String>Comment</String>
+        <String>Thread</String>
+        <String>Sender</String>
+        <String>Recipient</String>
+        <String>Creation Date</String>
+        <String>Modification Date</String>
+    </prefList>
+    <prefGroup key="Human motion analysis and annotation">
+        <pref key="output_video_resolution">
+            <String>half</String>
+        </pref>
+        <pref key="background_image">
+            <String>false</String>
+        </pref>
+        <pref key="use_single_cluster">
+            <String>false</String>
+        </pref>
+        <pref key="speed_threshold">
+            <String>normal</String>
+        </pref>
+        <pref key="input_video">
+            <String>///Users/Neta/Documents/neta sony/Neta/Documents/Nordoff Robbins/Autism/S/Videos/S C 1.mp4</String>
+        </pref>
+        <pref key="logging_level">
+            <String>normal</String>
+        </pref>
+        <prefGroup key="input_xml"/>
+        <pref key="use_rest_position">
+            <String>false</String>
+        </pref>
+        <pref key="change_threshold">
+            <Float>30.0</Float>
+        </pref>
+    </prefGroup>
+    <pref key="LayoutManager.SplitPaneDividerLocation">
+        <Int>2</Int>
     </pref>
     <pref key="TimeLineViewer.ZoomLevel">
         <Float>10.0</Float>
     </pref>
+    <pref key="LayoutManager.SelectedTabIndex">
+        <Int>0</Int>
+    </pref>
     <prefGroup key="TierColors">
         <pref key="C ALL PULSE">
             <Object class="java.awt.Color">0,0,160</Object>
+        </pref>
+        <pref key="C_Rhythmic_Movement">
+            <Object class="java.awt.Color">160,0,0</Object>
         </pref>
         <pref key="MT_Travelling">
             <Object class="java.awt.Color">0,90,160</Object>
@@ -43,32 +99,14 @@
         <pref key="CFPulse">
             <Object class="java.awt.Color">160,0,90</Object>
         </pref>
+        <pref key="C_Pulse">
+            <Object class="java.awt.Color">160,160,90</Object>
+        </pref>
         <pref key="C_Sound_Instrument">
             <Object class="java.awt.Color">90,160,90</Object>
         </pref>
         <pref key="C_Sound_song">
             <Object class="java.awt.Color">0,0,90</Object>
-        </pref>
-        <pref key="MT_Pulse">
-            <Object class="java.awt.Color">0,0,160</Object>
-        </pref>
-        <pref key="C_Travelling">
-            <Object class="java.awt.Color">160,0,160</Object>
-        </pref>
-        <pref key="Shared_Pulse">
-            <Object class="java.awt.Color">90,90,0</Object>
-        </pref>
-        <pref key="MT_Facing_client">
-            <Object class="java.awt.Color">160,90,0</Object>
-        </pref>
-        <pref key="S/TT - mvt">
-            <Object class="java.awt.Color">0,160,0</Object>
-        </pref>
-        <pref key="C_Rhythmic_Movement">
-            <Object class="java.awt.Color">160,0,0</Object>
-        </pref>
-        <pref key="C_Pulse">
-            <Object class="java.awt.Color">160,160,90</Object>
         </pref>
         <pref key="MT F Pulse">
             <Object class="java.awt.Color">90,0,90</Object>
@@ -79,8 +117,14 @@
         <pref key="MT_Song">
             <Object class="java.awt.Color">0,160,160</Object>
         </pref>
+        <pref key="MT_Pulse">
+            <Object class="java.awt.Color">0,0,160</Object>
+        </pref>
         <pref key="MT_Sound_instrument">
             <Object class="java.awt.Color">160,90,90</Object>
+        </pref>
+        <pref key="C_Travelling">
+            <Object class="java.awt.Color">160,0,160</Object>
         </pref>
         <pref key="CMTTravelling">
             <Object class="java.awt.Color">0,160,90</Object>
@@ -88,11 +132,11 @@
         <pref key="MT out of view">
             <Object class="java.awt.Color">90,90,160</Object>
         </pref>
-        <pref key="default">
-            <Object class="java.awt.Color">160,160,0</Object>
-        </pref>
         <pref key="Activity">
             <Object class="java.awt.Color">90,160,160</Object>
+        </pref>
+        <pref key="default">
+            <Object class="java.awt.Color">160,160,0</Object>
         </pref>
         <pref key="C_Facing_MT">
             <Object class="java.awt.Color">90,0,160</Object>
@@ -103,21 +147,87 @@
         <pref key="MT_Speech">
             <Object class="java.awt.Color">160,90,160</Object>
         </pref>
+        <pref key="Shared_Pulse">
+            <Object class="java.awt.Color">90,90,0</Object>
+        </pref>
+        <pref key="MT_Facing_client">
+            <Object class="java.awt.Color">160,90,0</Object>
+        </pref>
+        <pref key="S/TT - mvt">
+            <Object class="java.awt.Color">0,160,0</Object>
+        </pref>
         <pref key="Synchrony/Turn_Taking">
             <Object class="java.awt.Color">90,0,0</Object>
         </pref>
     </prefGroup>
-    <pref key="MultiTierViewer.ActiveTierName">
-        <String>default</String>
+    <prefList key="CommentViewer.Columns.Hidden">
+        <String>Sender</String>
+        <String>Recipient</String>
+    </prefList>
+    <pref key="FrameLocation">
+        <Object class="java.awt.Point">0,23</Object>
     </pref>
     <pref key="GridViewer.TierName">
-        <String>MT_Facing_client</String>
+        <String>MT_Sound_instrument</String>
     </pref>
-    <pref key="TextViewer.TierName">
-        <String>Activity</String>
+    <pref key="SelectionBeginTime">
+        <Long>587560</Long>
     </pref>
     <pref key="LayoutManager.CurrentMode">
         <Int>1</Int>
     </pref>
+    <pref key="MediaTime">
+        <Long>547793</Long>
+    </pref>
+    <pref key="FrameSize">
+        <Object class="java.awt.Dimension">1417,869</Object>
+    </pref>
+    <pref key="MultiTierViewer.ActiveTierName">
+        <String>MT_Sound_instrument</String>
+    </pref>
+    <prefGroup key="CommentViewer.Columns">
+        <pref key="Modification Date">
+            <Int>75</Int>
+        </pref>
+        <pref key="Sender">
+            <Int>0</Int>
+        </pref>
+        <pref key="Tier">
+            <Int>75</Int>
+        </pref>
+        <pref key="Creation Date">
+            <Int>75</Int>
+        </pref>
+        <pref key="Initials">
+            <Int>75</Int>
+        </pref>
+        <pref key="Comment">
+            <Int>75</Int>
+        </pref>
+        <pref key="End Time">
+            <Int>75</Int>
+        </pref>
+        <pref key="Start Time">
+            <Int>75</Int>
+        </pref>
+        <pref key="Recipient">
+            <Int>0</Int>
+        </pref>
+        <pref key="Thread">
+            <Int>75</Int>
+        </pref>
+    </prefGroup>
+    <pref key="TextViewer.TierName">
+        <String>Activity</String>
+    </pref>
+    <pref key="TimeScaleBeginTime">
+        <Long>475193</Long>
+    </pref>
     <prefList key="MultiTierViewer.HiddenTiers"/>
+    <pref key="ActiveAudioRecognizerName">
+        <String>Text-to-Speech alignment</String>
+    </pref>
+    <pref key="SelectionEndTime">
+        <Long>600893</Long>
+    </pref>
 </preferences>
