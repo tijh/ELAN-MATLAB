@@ -78,6 +78,6 @@ colmap = colors; % this variable contains the list of color codes.
  	if (nargin >1)
  		title(optionaltitle,'Interpreter','none')
  	end
-	axis([ 0 maxx -inf inf ]);
+	axis([ minx maxx -inf inf ]);
 	hold off;
 end;

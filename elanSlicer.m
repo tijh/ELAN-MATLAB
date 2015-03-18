@@ -1,30 +1,35 @@
-% function newElan=elanSlice(elan,start,stop)
+% function newElan=elanSlicer(elan,start,stop)
 %
 % an elan struct (read by elanReadFile for instance, or created by
 % elanSlice) is sliced (everything else is omitted) according to the given
 % arguments:
 %
+% EDIT 18.3.2015 T. Himberg: Removed AnnotationValid tier and added 
+% the start and stop times as newElan.range instead to be compatible with
+% the rest of the ELAN-MATLAB functions. Updated function name to
+% elanSlicer to be able to tell the old and new apart.
+%
 % examples for slicing possibilities:
 % ----------------------------------
 %% (1a) slice time interval
-% slicedElan=elanSlice(elan, 10, 100);
+% slicedElan=elanSlicer(elan, 10, 100);
 %
 %% (1b) do it with several at once:
 %%   first slice starts at 10, end at 100,
 %%   second starts at 200, ends at 400
-% slicedElan=elanSlice(elan, [10 200], [100 400]);
+% slicedElan=elanSlicer(elan, [10 200], [100 400]);
 %
 %% (2a) Slicing with Tiers (taking the given tier as reference and slice
 %% definition)
-% ne=elanSlice(elan,elan.tiers.Blickrichtung_Schokou);
+% ne=elanSlicer(elan,elan.tiers.Blickrichtung_Schokou);
 %
 %% (2b) slice all annotations of a tier that have a certain value
-%ne=(elanSlice(elan,elan.tiers.Blickrichtung_Schokou,'2'));
+%ne=(elanSlicer(elan,elan.tiers.Blickrichtung_Schokou,'2'));
 %% (2c) slice all annotations of a tier that have any of these values
-%ne=(elanSlice(elan,elan.tiers.Blickrichtung_Schokou,{'2','3'}));
+%ne=(elanSlicer(elan,elan.tiers.Blickrichtung_Schokou,{'2','3'}));
 %
 
-function newElan=elanSlice(elan,start,stop)
+function newElan=elanSlicer(elan,start,stop)
 % in order to avoid confusion if you use both elanSlice and
 % elanTimeseriesSlice which would NOT be wise, we delete the
 % timeseries data as a precaution
@@ -56,10 +61,10 @@ if (isstruct(start))
 		selectedIndices=find(cf);
 		% create new struct containing indices where annotation matched stop
 		% argument
-		newElan=elanSlice(elan,[start(selectedIndices).start],[start(selectedIndices).stop]);
+		newElan=elanSlicer(elan,[start(selectedIndices).start],[start(selectedIndices).stop]);
 	else % example 2a
 		% create new struct containing start/stop indices of the annotations
-		newElan=elanSlice(elan,[start.start],[start.stop]);
+		newElan=elanSlicer(elan,[start.start],[start.stop]);
 	end;
 else % slicing with timestamps / without tiers (example 1)
 	fn=fieldnames(elan.tiers);
@@ -82,11 +87,15 @@ else % slicing with timestamps / without tiers (example 1)
 		%         newElan.tiers.(f)=[newElan.tiers.(f) elan.tiers.(f)(inds)];
 		%     end;
 	end;
-	for j=1:length(start); % for all slice time intervals (example 1b)
-		newElan.tiers.AnnotationValid(j).start=start(j);
-		newElan.tiers.AnnotationValid(j).stop=stop(j);
-		newElan.tiers.AnnotationValid(j).duration=stop(j)-start(j);
-		newElan.tiers.AnnotationValid(j).overlapSeconds=stop(j)-start(j);
-		newElan.tiers.AnnotationValid(j).overlapCase=16;
-	end;
+% 	for j=1:length(start); % for all slice time intervals (example 1b)
+% 		newElan.tiers.AnnotationValid(j).start=start(j);
+% 		newElan.tiers.AnnotationValid(j).stop=stop(j);
+% 		newElan.tiers.AnnotationValid(j).duration=stop(j)-start(j);
+% 		newElan.tiers.AnnotationValid(j).overlapSeconds=stop(j)-start(j);
+% 		newElan.tiers.AnnotationValid(j).overlapCase=16;
+% 	end;
+
+    newElan.range = [start stop];
+
+
 end;
