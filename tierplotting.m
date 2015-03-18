@@ -200,7 +200,7 @@ elanPlotColors(data, associations, colors, plotTitle)
 
 % First, run steps 1-5 as usual, then cut the desired "slice" of the data:
 
-data2 = elanSlicer(data, 800, 1000); % 120 and 600 are the start and 
+data2 = elanSlicer(data, 800, 1000); % 800 and 1000 are the start and 
                                    % stop times in seconds (you can enter
                                    % time in minutes by multiplying by 60, 
                                    % e.g. data2 = elanSlice(data, 1*60, 15*60);
