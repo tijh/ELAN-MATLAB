@@ -206,7 +206,10 @@ plotTitle = 'MyTitle';
 % editing the plot, and then you can save it in various image formats from
 % File -> Save as. 
 
-elanPlotColors(data, associations, colors, plotTitle)
+timeunit = 'min'; % change to anything else but 'min' if you want the x-axis 
+                  % units to be in seconds rather than minutes
+
+elanPlotColors(data, associations, colors, timeunit, plotTitle)
 
 %% 7. Plot a section of data 
 
@@ -231,9 +234,8 @@ data2 = elanSlicer(data, 800, 1000); % 800 and 1000 are the start and
 
 plotTitle = 'MyTitle';
 
-elanPlotColors(data2, associations, colors, plotTitle) % NB data2 
+timeunit = 'min'; % change to anything else but 'min' if you want the x-axis 
+                  % units to be in seconds rather than minutes
+
+elanPlotColors(data2, associations, colors, timeunit, plotTitle) % NB data2 
                                    
-
-
-
-
