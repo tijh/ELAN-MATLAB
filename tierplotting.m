@@ -128,7 +128,8 @@ values = elanValues(data, 'toplot', 1)
 % Light red = 1 0.5 0.5
 %
 % You can easily make your own palettes of how ever many colors you need by
-% editing any of the examples below.
+% editing any of the examples below. The list of colors is put in square
+% brackets, each color (three numbers) separated with a semicolon. 
 %
 %
 % UNCOMMENT THE "colors = ..." PART FROM ONE OF THE FOLLOWING, MAKE SURE
