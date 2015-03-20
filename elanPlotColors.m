@@ -87,10 +87,9 @@ colmap = colors; % this variable contains the list of color codes.
     
     % text per line (name of tier + number of different annotations)
 	tiertext = strcat(fn{i});
-%	tiertext2 = strcat('#',num2str(numcolor),' (',num2str(lenf),')');
-	% Todo: give also number of anntations
+
 	try
-		text(minx-40,i,tiertext,'HorizontalAlignment','right','Interpreter','none','Margin',10,'FontSize',14);
+		text(elan.range(1)-30,i,tiertext,'HorizontalAlignment','right','Interpreter','none','Margin',10,'FontSize',14);
 	%	text(maxx,i,tiertext2,'HorizontalAlignment','left','Interpreter','none','Margin',20,'FontSize',8);
  	catch message
  		error('No annotations in tier. Did you save your elan file before importing it?');
