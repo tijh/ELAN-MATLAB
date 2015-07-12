@@ -26,6 +26,25 @@ elseif nargin < 3;
     tiers = []; 
 end
 
+fulllist = {'Sound'; 'MT_Song'; 'MT_Speech'; 'MT_Instrument'; 'MT_Travelling';...
+    'MT_Facing_Client'; 'MT_Pulse'; 'C_Speech'; 'C_Instrument'; 'C_Travelling';...
+    'C_Facing_MT'; 'C_Pulse'}; 
+
+brieflist = {'Sound'; 'MT_Sound'; 'MT_Travelling'; 'MT_Facing_Client';...
+    'C_Sound'; 'C_Travelling'; 'C_Facing_MT'}; 
+    
+
+
+% To generate the ELAN-readable file: 
+% one annotation per line, comma separated  
+% tiername,begintime,endtime,annotation 
+%
+% 
+
+
+
+    
+    
 
 
 
