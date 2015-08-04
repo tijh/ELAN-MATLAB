@@ -19,7 +19,10 @@
 % elan=elanReadData({'example.eaf','VP01-face-1.eaf'});
 %
 % EDIT 16.1.2015 (TH) Added field elan.range to include the start and stop
-% times so that the AnnotationValid-tier is not needed in plotting. 
+% times so that the AnnotationValid-tier is not needed in plotting.
+% EDIT 3.8.2015 (TH) Removed unnecessary private functions, the code no
+% longer produces TSR or overlap fields, and no AnnotationValid or ElanData 
+% tiers. 
 
 
 function elan=elanReadData(fn, prevElan, offset)
@@ -107,21 +110,21 @@ for i=0:tierElems.getLength-1
 	annoElems = elem.getElementsByTagName('ANNOTATION');
 	for i=0:annoElems.getLength-1
 		elem=annoElems.item(i).getElementsByTagName('ALIGNABLE_ANNOTATION').item(0);
-		anno.startTSR = char(elem.getAttribute('TIME_SLOT_REF1'));
-		anno.stopTSR = char(elem.getAttribute('TIME_SLOT_REF2'));
+		tmp1 = char(elem.getAttribute('TIME_SLOT_REF1'));
+		tmp2 = char(elem.getAttribute('TIME_SLOT_REF2'));
 		% TODO why do we work with seconds?
-		anno.start = timeSlots.get(anno.startTSR)/1000;
-		anno.stop = timeSlots.get(anno.stopTSR)/1000;
+		anno.start = timeSlots.get(tmp1)/1000;
+		anno.stop = timeSlots.get(tmp2)/1000;
 		if(exist ('/Users/adierker/svn-checkouts/programming/matlab','file'))
 		% very dirty mt9 classification hack! (classification was always 0.6 sec late)
 			if(strfind (tId ,'classification'))
-				anno.start = (timeSlots.get(anno.startTSR)/1000-0.5);
-				anno.stop = (timeSlots.get(anno.stopTSR)/1000-0.5);
+				anno.start = (timeSlots.get(tmp1)/1000-0.5);
+				anno.stop = (timeSlots.get(tmp2)/1000-0.5);
 			end
 		end
 		anno.duration = anno.stop - anno.start;
-		anno.overlapCase=0;
-		anno.overlapSeconds=anno.duration;
+		%anno.overlapCase=0;
+		%anno.overlapSeconds=anno.duration;
 		anno.value=char(elem.getElementsByTagName('ANNOTATION_VALUE').item(0).getTextContent());
 		anno.value=regexprep(anno.value,{'/',' '},'');
 		if (anno.start>=0)
@@ -339,14 +342,14 @@ else
 				% process all intervals of valid data (beginning with items of negative) 
 				% and add annotations for each of them
 				for l = 1:length(negative)
-					anno.startTSR = NaN; %this annotation does not exist in the .eaf file
-					anno.stopTSR = NaN;
+					%anno.startTSR = NaN; %this annotation does not exist in the .eaf file
+					%anno.stopTSR = NaN;
 					anno.start = partdata(negative(l),1)/tscorrection;
 					anno.stop = partdata(positive(l),1)/tscorrection;
 					anno.value = num2str(l);
 					anno.duration = anno.stop - anno.start;
-					anno.overlapCase = 0;
-					anno.overlapSeconds = anno.duration;
+					%anno.overlapCase = 0;
+					%anno.overlapSeconds = anno.duration;
 					if (anno.start>=0)
 						elan.tiers.(tId) = [elan.tiers.(tId) anno];
 						minStart = min(minStart,anno.start);
@@ -359,158 +362,32 @@ else
 end%if
 
 %% create tier 'AnnotationValid' (see elanSlice)
-if (~isfield(elan.tiers,'AnnotationValid'))
-	elan.tiers.AnnotationValid=[];
-end;
-anno.startTSR = NaN; %this annotation does not exist in the .eaf file
-anno.stopTSR = NaN;
+% if (~isfield(elan.tiers,'AnnotationValid'))
+% 	elan.tiers.AnnotationValid=[];
+% end;
+%anno.startTSR = NaN; %this annotation does not exist in the .eaf file
+%anno.stopTSR = NaN;
 anno.start = minStart;
 anno.stop = maxStop;
 anno.duration = maxStop - minStart;
 [~, anno.value] = fileparts(fn);
-anno.overlapCase = 0;
-anno.overlapSeconds = anno.duration;
+%anno.overlapCase = 0;
+%anno.overlapSeconds = anno.duration;
 % when using slicing methods AnnotationValid is also sliced and is, thus, showing the 
 % sliced region(s)
-elan.tiers.AnnotationValid = [elan.tiers.AnnotationValid anno];
+%elan.tiers.AnnotationValid = [elan.tiers.AnnotationValid anno];
 % when using slicing methods ElanFile is not sliced and is, thus, showing the length
 % of the original elan file (particularly useful if you use more than one elan file at once)
-elan.tiers.ElanFile = elan.tiers.AnnotationValid; %copy 'AnnotationValid' to 'ElanFile'
+%elan.tiers.ElanFile = elan.tiers.AnnotationValid; %copy 'AnnotationValid' to 'ElanFile'
 
 elan.range = [minStart, maxStop];
+
+
+
+
+
 %%========================================================================
 %% %%%%%% private functions
-
-%% private: specialWiiMilesTreatment (ONLY called for special Bielefeld wii or miles csv data!)
-% note: this function should only be used in our special case, not in yours!
-function [elan,csvdata] = specialWiiMilesTreatment(elan,csvdata,type_associated,fname,loadname,csv_origin)
-% if there is another associated file 'miles': load this too
-% if the type of the data is wii (not miles)
-if (strcmp(type_associated,'wii'))
-	% correct the wii data (ignore outlier)
-	csvdata = cutOutlier(csvdata);
-	
-	
-	% load the additional miles data and save it to elan struct
-	otherloadname = regexprep(loadname,'wii','miles');
-	fprintf('reading associated miles file "%s"\n',otherloadname);
-	milesdata = elanReadLinkedCSV(otherloadname);
-	if (~isempty(csv_origin))
-		% recalculate these timestamps
-		% Todo: is this correct?
-		milesdata(:,1) = milesdata(:,1)-csv_origin;
-		milesdata = milesdata(milesdata(:,1)>=0,:);
-	end%if
-	% downscale milesdata
-	%milesdata = milesdata(1:5:end,:);
-	% save data into struct
-	elan.linkedFiles.merged_mt9_data.data = milesdata;
-	elan.linkedFiles.merged_mt9_data.type = 'mt9';
-	elan.linkedFiles.merged_mt9_data.tsunit = 'ms';
-	elan.linkedFiles.merged_mt9_data.name = regexprep(fname,'wii','miles');
-end%if
-
-
-%% private: loadBaseTimestamp   (ONLY called for special Bielefeld wii or miles csv data!)
-function [ismerged, type_associated, eafbaseTS] = loadBaseTimestamp(eafname,eafbaseTS)
-% split filename of input file in strings delimited by '-'
-[~, tok] = regexp(eafname, '-', 'match','split');
-if (length(tok)>=3)
-	% test if the tokens are of a set of associated experiment files with
-	% equal stem names (e.g. stem = "20100817_1405_20_log"+"-merged-miles.eaf")
-	if (strcmp(tok(end-1),'merged') && (any(strfind(tok{end},'miles'))||any(strfind(tok{end},'wii'))))
-		baseTSfname = strcat(tok(1),'-basetime.txt');
-		ismerged = 1;
-		try
-			% load base timestamp from external file
-			eafbaseTS = load (char(baseTSfname));
-			fprintf('reading base timestamp from file "%s"\n', char(baseTSfname));
-		catch
-			try
-				baseTSfname = strcat(argfilepath,baseTSfname);
-				eafbaseTS = load (char(baseTSfname));
-				fprintf('reading base timestamp from file "%s"\n', char(baseTSfname));
-			catch
-				% if neither of this worked ignore basetimestamp
-			end%try
-		end%try
-		if (any(strfind(tok{end},'wii')))
-			% load merged miles file as well
-			type_associated = 'wii';
-		else
-			type_associated = 'mt9';
-		end%if
-	else
-		type_associated = 'NaN';
-		ismerged = NaN;
-		eafbaseTS = NaN;
-	end%if
-else
-	type_associated = 'NaN';
-	ismerged = NaN;
-	eafbaseTS = NaN;
-end%if
-
-
-%% private: cutOutlier     (ONLY called for special Bielefeld wii or miles csv data!)
-function csvdata = cutOutlier(csvdata)
-dcsvdata = diff(csvdata(:,[2:end]));
-dcsvdata = [csvdata(:,1),[zeros(1,size(dcsvdata,2));dcsvdata]];
-
-plotting = false;
-for col = 2:size(csvdata,2)
-	
-	% one
-	outlier_d = find (abs(dcsvdata(:,col))>0.03);%vector of row numbers of outliers
-	length(outlier_d);
-	if (~isempty(outlier_d))
-		count = 0;
-		radius = 5;
-		for out = 1:length(outlier_d)
-			
-			% test if outlier_d is in the beginning or at the end of csvdata
-			if (outlier_d(out)>radius && outlier_d(out)<length(csvdata)-radius)
-				
-				% test if outlier_d is at the end of outliers-vector (then it must be outlier
-				% not gesture since gestures last longer (since their gradient is smaller))
-				if (length(outlier_d) < out+radius)
-					% interpolate outlier
-					tmp = outlier_d(out); % row number of outlier in csvdata
-					csvdata([tmp-1;tmp;tmp+1],col) = interp1(csvdata([tmp-2;tmp+2],1), csvdata([tmp-2;tmp+2],col), csvdata([tmp-1;tmp;tmp+1],1));
-					
-					% test if outlier is really outlier (not a gesture which lasts longer)
-				elseif (outlier_d(out+radius) ~= outlier_d(out)+radius)
-					% interpolate outlier
-					tmp = outlier_d(out);
-					
-					if plotting == true
-						try
-							% for plotting
-							blub = csvdata([tmp-(radius+5):tmp+(radius+5)],col);
-							dblub = dcsvdata(tmp-(radius+5):tmp+(radius+5),col);
-						catch
-						end
-					end%if
-					
-					csvdata([tmp-(radius-1):tmp+(radius-1)],col) = interp1(csvdata([tmp-radius;tmp+radius],1), csvdata([tmp-radius;tmp+radius],col), csvdata([tmp-(radius-1):tmp+(radius-1)],1));
-					
-					if plotting == true
-						try
-							%figure(1);plot( csvdata(tmp-(radius):tmp+(radius),1) ,[csvdata((tmp-2:tmp+2),col),blub],':o')
-							plot( csvdata(tmp-(radius+5):tmp+(radius+5),1) ,[csvdata(tmp-(radius+5):tmp+(radius+5),col), blub , dblub],':o')
-							axis([ -inf inf -0.5 0.5])
-							pause(1)
-						catch
-						end
-					end%if
-				else
-					count = count+1;
-				end%if
-			end%if
-		end%for
-	end%if
-end%for
-
 
 
 %% %%%%%% these private functions are called for all .eaf files with csv data
@@ -620,3 +497,6 @@ end%if
 %#ok<*WNTAG>
 %#ok<*CTCH>
 %#ok<*AGROW>
+
+
+
