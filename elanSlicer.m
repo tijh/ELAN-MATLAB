@@ -1,49 +1,39 @@
-% function newElan=elanSlicer(elan,start,stop)
-%
-% an elan struct (read by elanReadFile for instance, or created by
-% elanSlice) is sliced (everything else is omitted) according to the given
-% arguments:
-%
-% EDIT 18.3.2015 T. Himberg: Removed AnnotationValid tier and added 
-% the start and stop times as newElan.range instead to be compatible with
-% the rest of the ELAN-MATLAB functions. Updated function name to
-% elanSlicer to be able to tell the old and new apart.
-%
-% examples for slicing possibilities:
-% ----------------------------------
-%% (1a) slice time interval
-% slicedElan=elanSlicer(elan, 10, 100);
-%
-%% (1b) do it with several at once:
-%%   first slice starts at 10, end at 100,
-%%   second starts at 200, ends at 400
-% slicedElan=elanSlicer(elan, [10 200], [100 400]);
-%
-%% (2a) Slicing with Tiers (taking the given tier as reference and slice
-%% definition)
-% ne=elanSlicer(elan,elan.tiers.Blickrichtung_Schokou);
-%
-%% (2b) slice all annotations of a tier that have a certain value
-%ne=(elanSlicer(elan,elan.tiers.Blickrichtung_Schokou,'2'));
-%% (2c) slice all annotations of a tier that have any of these values
-%ne=(elanSlicer(elan,elan.tiers.Blickrichtung_Schokou,{'2','3'}));
-%
+function out=elanSlicer(elan,start,stop)
 
-function newElan=elanSlicer(elan,start,stop)
-% in order to avoid confusion if you use both elanSlice and
-% elanTimeseriesSlice which would NOT be wise, we delete the
-% timeseries data as a precaution
-if isfield(elan,'linkedFiles')
-	warning('removing timesieries data as a precaution - we recommend to use elanTimeseriesSlice if you intend to slice the timeseries data as well');
-	try
-		elan.tiers = rmfield(elan.tiers,'merged_mt9_data_remus');
-		elan.tiers = rmfield(elan.tiers,'merged_mt9_data_romulus');
-		elan.tiers = rmfield(elan.tiers,'csv_1_all');
-		elan = rmfield(elan,'linkedFiles');
-	catch
-		warning('some of the fields may not have been removed')
-	end
-end
+% To cut slices from an ELAN-MATLAB structure. 
+%
+% newElan=elanSlicer(elan,start,stop)
+%
+% INPUT arguments: 
+%
+% elan = ELAN-MATLAB structure
+% start = start time(s) of the slice (seconds)
+% stop = stop time(s) of the slice (seconds)
+%
+% OUTPUT:
+%
+% out = ELAN-MATLAB structure containing only the sliced bit
+%
+% usage examples:
+%
+% slicedElan = elanSlicer(elan, 10, 100);
+%
+% slicedElan = elanSlicer(elan, [10 200], [100 400]); % multiple slices
+%
+% newElan = elanSlicer(elan, elan.tiers.C_Facing_MT); % slice based on tier
+%
+% newElan = (elanSlicer(elan, elan.tiers.C_Facing_MT, 'NF')); % slice based
+% on an annotation on a tier (can also use multiple annotations). 
+%
+% EDIT 18.3.2015 (TH) Removed AnnotationValid tier and added 
+% the start and stop times as newElan.range instead to be compatible with
+% the rest of the ELAN-MATLAB functions. 
+%
+% Based on elanSlice.m in SALEM 0.1beta toolbox (Uni Bielefeld) 
+%
+%  ~~ ELAN-MATLAB Toolbox ~~~~ github.com/tijh/ELAN-MATLAB ~~
+% Tommi Himberg, NBE / Aalto University. Last changed 13.8.2015
+
 
 % begin slicing
 % are we slicing with timestamps or with tiers?
@@ -61,41 +51,30 @@ if (isstruct(start))
 		selectedIndices=find(cf);
 		% create new struct containing indices where annotation matched stop
 		% argument
-		newElan=elanSlicer(elan,[start(selectedIndices).start],[start(selectedIndices).stop]);
+		out=elanSlicer(elan,[start(selectedIndices).start],[start(selectedIndices).stop]);
 	else % example 2a
 		% create new struct containing start/stop indices of the annotations
-		newElan=elanSlicer(elan,[start.start],[start.stop]);
+		out=elanSlicer(elan,[start.start],[start.stop]);
 	end;
 else % slicing with timestamps / without tiers (example 1)
 	fn=fieldnames(elan.tiers);
-	newElan=elan;
+	out=elan;
 	% compute for each tier
 	for i=1:length(fn)
 		f=fn{i};
 		stats.(f).count=length(elan.tiers.(f));
 		tier=elan.tiers.(f);
 		if (isempty(tier))
-			newElan.tiers.(f)=[];
+			out.tiers.(f)=[];
 			continue;
 		end;
 		%% check times
-		newElan.tiers.(f)=elanComputeOverlap(tier,start,stop);
+		out.tiers.(f)=elanComputeOverlap(tier,start,stop);
 		%
-		%     newElan.tiers.(f)=[];
-		%     for j=1:length(start);
-		%         inds = find(([elan.tiers.(f).start]>=start(j)) & ([elan.tiers.(f).start]<=stop(j)));
-		%         newElan.tiers.(f)=[newElan.tiers.(f) elan.tiers.(f)(inds)];
-		%     end;
 	end;
-% 	for j=1:length(start); % for all slice time intervals (example 1b)
-% 		newElan.tiers.AnnotationValid(j).start=start(j);
-% 		newElan.tiers.AnnotationValid(j).stop=stop(j);
-% 		newElan.tiers.AnnotationValid(j).duration=stop(j)-start(j);
-% 		newElan.tiers.AnnotationValid(j).overlapSeconds=stop(j)-start(j);
-% 		newElan.tiers.AnnotationValid(j).overlapCase=16;
-% 	end;
 
-    newElan.range = [start stop];
+
+    out.range = [start stop];
 
 
 end;

@@ -4,6 +4,11 @@ function output = elanStats(elan, tier)
 % in an ELAN file.
 % output = elanStats(elan, tier) 
 % tier optional 
+% WORK IN PROGRESS
+% Built on the SALEM 0.1beta toolbox (Uni Bielefeld) 
+%
+%  ~~ ELAN-MATLAB Toolbox ~~~~ github.com/tijh/ELAN-MATLAB ~~
+% Tommi Himberg, NBE / Aalto University. Last changed 13.8.2015
 
 tierlist = fieldnames(elan.tiers);
 

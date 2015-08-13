@@ -3,7 +3,9 @@ function out = elanSimplifyValues(elan, tier, value, newtier)
 % Replaces all values in the given tier with the given value. Can be used
 % to simplify a detailed tier with a simpler, biary coding. 
 %
-% Input arguments: 
+% out = elanSimplifyValues(elan, tier, value, newtier)
+%
+% INPUT arguments: 
 %
 % elan = ELAN data structure 
 % tier = name of the tier to edit
@@ -11,13 +13,14 @@ function out = elanSimplifyValues(elan, tier, value, newtier)
 % newtier (optional) = name of the tier to be created for the new annotations 
 % if left empty, 'tier' values are replaced by 'value'.  
 %
-% Output: 
+% OUTPUT: 
 % out = ELAN data structure, same as the input 'elan', but either 'newtier'
 % added or all annotation values on 'tier' replaced. 
 %
-% Uses ELAN-data structure from SALEM Toolbox.
+% Built on the SALEM 0.1beta toolbox (Uni Bielefeld) 
 %
-% Tommi Himberg, NBE, Aalto University 2015, last changed 9.7.2015
+%  ~~ ELAN-MATLAB Toolbox ~~~~ github.com/tijh/ELAN-MATLAB ~~
+% Tommi Himberg, NBE / Aalto University. Last changed 13.8.2015
 
 lg = length(elan.tiers.(tier)); 
 

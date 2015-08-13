@@ -1,19 +1,18 @@
-% function elan=elanReadData(fn, prevElan, offset)
+function elan = elanReadData(fn, prevElan, offset)
+
+% Reads in ELAN-data (.eaf files), produces the ELAN-MATLAB data structure.
+% elan = elanReadData(fn, prevElan, offset)
 % 
-% arguments: fn: filename of elan file as string (can also be a cell array of filename-strings)
-%            prevElan: internal, do not use!
-%            offset: internal argument, do not use!
+% INPUT arguments: 
 % 
-% parses the given ELAN file into a struct of tiers and time_slots. The
-% time_slots are mostly useless, while the tiers is a struct with all
-% annotation according to the tiers, with computed start and end times and
-% values. Additionally two tiers "ValidAnnotation"  and "ElanFile" are added to support 
-% slicing of files (see help elanSlice).
+% fn = filename of ELAN file as string (can also be a cell array of filename-strings)
+% prevElan & offset = internal arguments, don't use
+% 
 % If there are linked media files or linked csv files, they will be loaded as well 
 % but only if you are working with a single file.
 %
 % usage:
-% elan=elanReadData('example.eaf')
+% elan = elanReadData('anno_example.eaf')
 %
 % supports loading of several files at once:
 % elan=elanReadData({'example.eaf','VP01-face-1.eaf'});
@@ -23,9 +22,12 @@
 % EDIT 3.8.2015 (TH) Removed unnecessary private functions, the code no
 % longer produces TSR or overlap fields, and no AnnotationValid or ElanData 
 % tiers. 
+%
+% Based on the elanRead.m SALEM 0.1beta toolbox (Uni Bielefeld) 
+%
+%   ~~ ELAN-MATLAB Toolbox ~~~~ github.com/tijh/ELAN-MATLAB ~~
+% Tommi Himberg, NBE / Aalto University. Last changed 13.8.2015
 
-
-function elan=elanReadData(fn, prevElan, offset)
 
 if nargin<2
 	prevElan=[];
@@ -56,10 +58,6 @@ xDoc=xmlread(fn);
 % Find a deep list of all <listitem> elements.
 import java.util.*;
 
-%% get date timestamp
-%docdate = xDoc.getElementsByTagName('ANNOTATION_DOCUMENT')
-%tmp = char(docdate.item(0).getAttribute('DATE'))
-%datestr(datenum(tmp,'yyyy-mm-ddTHH:MM:SS'))
 
 %% parse time order
 timeOrderElem = xDoc.getElementsByTagName('TIME_ORDER');
@@ -75,7 +73,6 @@ for i=0:timeSlotElems.getLength-1
 	tv = elem.getAttribute('TIME_VALUE');
 	timeSlots.put(ts, str2num(tv)+offset*1000);
 end
-%elan.timeSlots=timeSlots;
 
 
 %% parse elan annotations
@@ -90,21 +87,14 @@ for i=0:tierElems.getLength-1
 	elem=tierElems.item(i);
 	tId = char(elem.getAttribute('TIER_ID'));
 	tId = regexprep(strtrim(tId),'[^\w]','_');
-	if (exist ('/Users/adierker/svn-checkouts/programming/matlab','file'))
-		% ONLY in our special case delete all _001/_002/... endings of tiernames
-		if(strfind (tId ,'syllables')) % ignore syllables-tiers
-			continue
-		end%if
-		tId = regexprep(tId,'_00\d','');
-	end%if
+	
 	if (~isfield(elan.tiers,tId)) % error when tier name begins with number (restrictions from matlab variable names)
 		try
 			elan.tiers.(tId) = [];
 		catch
 			error('Please use tier names with no number in the first digit. Invalid tier name: %s',tId);
 		end;
-	%else
-	%	error('tiername %s already exists',tId);
+	
 	end;
 	
 	annoElems = elem.getElementsByTagName('ANNOTATION');
@@ -112,19 +102,12 @@ for i=0:tierElems.getLength-1
 		elem=annoElems.item(i).getElementsByTagName('ALIGNABLE_ANNOTATION').item(0);
 		tmp1 = char(elem.getAttribute('TIME_SLOT_REF1'));
 		tmp2 = char(elem.getAttribute('TIME_SLOT_REF2'));
-		% TODO why do we work with seconds?
+		
 		anno.start = timeSlots.get(tmp1)/1000;
 		anno.stop = timeSlots.get(tmp2)/1000;
-		if(exist ('/Users/adierker/svn-checkouts/programming/matlab','file'))
-		% very dirty mt9 classification hack! (classification was always 0.6 sec late)
-			if(strfind (tId ,'classification'))
-				anno.start = (timeSlots.get(tmp1)/1000-0.5);
-				anno.stop = (timeSlots.get(tmp2)/1000-0.5);
-			end
-		end
+		
 		anno.duration = anno.stop - anno.start;
-		%anno.overlapCase=0;
-		%anno.overlapSeconds=anno.duration;
+		
 		anno.value=char(elem.getElementsByTagName('ANNOTATION_VALUE').item(0).getTextContent());
 		anno.value=regexprep(anno.value,{'/',' '},'');
 		if (anno.start>=0)
@@ -212,10 +195,7 @@ else
 						loadname = filepath;
 					otherwise
 						warning('file "%s" not found in relative or absolute path\n',fname);
-						% a 'continue' is not nice but still nicer than to throw an error
-						% since you can still work with your eaf even if the
-						% linkedFile is not present and you don't want to edit the
-						% linked_files_section
+						
 						continue;
 				end%switch
 				fprintf('reading linked file "%s"\n', loadname);
@@ -361,32 +341,17 @@ else
 	end%if
 end%if
 
-%% create tier 'AnnotationValid' (see elanSlice)
-% if (~isfield(elan.tiers,'AnnotationValid'))
-% 	elan.tiers.AnnotationValid=[];
-% end;
-%anno.startTSR = NaN; %this annotation does not exist in the .eaf file
-%anno.stopTSR = NaN;
+
 anno.start = minStart;
 anno.stop = maxStop;
 anno.duration = maxStop - minStart;
 [~, anno.value] = fileparts(fn);
-%anno.overlapCase = 0;
-%anno.overlapSeconds = anno.duration;
-% when using slicing methods AnnotationValid is also sliced and is, thus, showing the 
-% sliced region(s)
-%elan.tiers.AnnotationValid = [elan.tiers.AnnotationValid anno];
-% when using slicing methods ElanFile is not sliced and is, thus, showing the length
-% of the original elan file (particularly useful if you use more than one elan file at once)
-%elan.tiers.ElanFile = elan.tiers.AnnotationValid; %copy 'AnnotationValid' to 'ElanFile'
 
 elan.range = [minStart, maxStop];
 
 
 
 
-
-%%========================================================================
 %% %%%%%% private functions
 
 

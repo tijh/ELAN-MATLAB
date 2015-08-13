@@ -10,18 +10,17 @@ function out = elanRenameTiers(elan, oldtiers, newtiers)
 % replaced 
 % newtiers = string or a cell structure containing the new tier names. 
 %
-% N.B. the number of items in oldtiers and newtiers must be the same. Names
+% N.B. the number of items in oldtiers and newtiers must match. Names
 % are switched in order, so that oldtiers{1} becomes newtiers {1} etc. 
 %
-% Output: 
+% OUTPUT: 
 %
 % out = ELAN-MATLAB structure with new tier names.  
 %
-% Uses data structure of the SALEM 0.1beta toolbox. 
+% Built on the SALEM 0.1beta toolbox (Uni Bielefeld) 
 %
-% Tommi Himberg, BRU / Aalto University. Last changed 23.10.2014 
-
-%%
+%  ~~ ELAN-MATLAB Toolbox ~~~~ github.com/tijh/ELAN-MATLAB ~~
+% Tommi Himberg, NBE / Aalto University. Last changed 13.8.2015
 
 if isstr(oldtiers)
     if ~isstr(newtiers) % if they don't match, break 

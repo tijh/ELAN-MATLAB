@@ -1,23 +1,24 @@
-function elan2 = elanRemoveLabel(elan, tier, label);  
+function elan2 = elanRemoveLabel(elan, tier, label)  
 
-% [] = elanRemoveLabel(elan, label) 
-% 
 % Removes vertail label values from a tier 
 %
-% Inputs arguments: 
+% elan2 = elanRemoveLabel(elan, label) 
+%
+% INPUT arguments: 
 % 
 % elan: elan data structure 
 % tier: tier from which the value labels are removed from
-% label: label value or values to be remover from the data structure 
+% label: label value or values to be removed from the data structure 
 % 
-% Output: 
+% OUTPUT: 
 % elan2: elan data structure with given labels removed from the given tier
 %
+% WORK IN PROGRESS!!
 %
-% Uses the ELAN data structure from SALEM0.1 toolbox 
+% Built on the SALEM 0.1beta toolbox (Uni Bielefeld) 
 %
-% Tommi Himberg, Aalto University, Matlab R2014b (Mac) Last changed:
-% 17.3.2015 
+%  ~~ ELAN-MATLAB Toolbox ~~~~ github.com/tijh/ELAN-MATLAB ~~
+% Tommi Himberg, NBE / Aalto University. Last changed 13.8.2015 
 
 if nargin < 3;
     disp('Too few input arguments:')

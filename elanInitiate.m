@@ -1,4 +1,4 @@
-function [newelan] = elanInitiate(filename, templatetype, tiers)
+function newelan = elanInitiate(filename, templatetype, tiers)
 % newelan = elanInitiate(filename, templatetype, tiers)
 % 
 % Creates a txt file that can be read to ELAN, with a set of tiers 
@@ -17,7 +17,15 @@ function [newelan] = elanInitiate(filename, templatetype, tiers)
 % OUTPUT: 
 %
 % Saves a tab delimited txt-file filename.txt that contains the initialised
-% tiers, as well as Matlab data structure newelan that can then be 
+% tiers, as well as Matlab data structure newelan. 
+%
+% WORK IN PROGRESS!
+%
+% Built on the SALEM 0.1beta toolbox (Uni Bielefeld) 
+%
+%  ~~ ELAN-MATLAB Toolbox ~~~~ github.com/tijh/ELAN-MATLAB ~~
+% Tommi Himberg, NBE / Aalto University. Last changed 13.8.2015
+
 
 if nargin < 2; 
     templatetype = 'full'; 

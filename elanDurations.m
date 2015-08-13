@@ -1,8 +1,15 @@
 function [out labs] = elanDurations(elan, tier); 
 
+% Calculates the durations split by label
 % [out labs] = elanDurations(elan, tier); 
 %
-% calculates the durations split by label
+% WORK IN PROGRESS!!
+%
+% Built on the SALEM 0.1beta toolbox (Uni Bielefeld) 
+%
+%  ~~ ELAN-MATLAB Toolbox ~~~~ github.com/tijh/ELAN-MATLAB ~~
+% Tommi Himberg, NBE / Aalto University. Last changed 13.8.2015
+
 %%
 labels = elanValues(elan, tier);
 

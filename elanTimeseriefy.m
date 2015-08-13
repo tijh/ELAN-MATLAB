@@ -1,10 +1,10 @@
 function out = elanTimeseriefy(elan, tier, annovalues)  
 
-% out = elanTimeseriefy(elan, tier, annovalues);  
 % A function to change annotations into a time-series, with a resolution of
 % 0.01 seconds.
+% out = elanTimeseriefy(elan, tier, annovalues);  
 %
-% Input arguments: 
+% INPUT arguments: 
 %
 % elan = elan data structure
 % tier = name of the tier you want to time-seriefy
@@ -14,7 +14,7 @@ function out = elanTimeseriefy(elan, tier, annovalues)
 % automatically from the data, setting integers 1...n in alphabetical
 % order. 
 %
-% Output: 
+% OUTPUT: 
 % 
 % out = MATLAB time series object with annotations transformed into numbers
 % as data, and the times of their occurrence as 'time'. The annotation
@@ -25,9 +25,10 @@ function out = elanTimeseriefy(elan, tier, annovalues)
 % hold rather than linear, this can be changed using the setinterpmethod
 % function on the output. 
 %
-% Uses ELAN-data structure from SALEM Toolbox.
+% Built on the SALEM 0.1beta toolbox (Uni Bielefeld) 
 %
-% Tommi Himberg, BRU Aalto University 2015, last changed 9.7.2015
+%  ~~ ELAN-MATLAB Toolbox ~~~~ github.com/tijh/ELAN-MATLAB ~~
+% Tommi Himberg, NBE / Aalto University. Last changed 13.8.2015
 
 
 resolution = 0.01; % in future version this could be made to vary
@@ -37,7 +38,7 @@ data.range = elan.range;
 
 numanno = length(data.tiers.(tier)); % how many annotations in total 
 
-% pick data from SALEM structure
+% pick data from ELAN-MATLAB structure
 
 times = zeros(numanno,2); % preallocate 
 vals = cell(numanno,1); 

@@ -1,16 +1,16 @@
-function output = elanTotalTimes(elan, tier, abs) 
+function out = elanTotalTimes(elan, tier, abs) 
 % Extracts the total durations per annotation label in a tier of ELAN file.
 % 
-% function output = elanTotalTimes(elan, tier, abs) 
+% out = elanTotalTimes(elan, tier, abs) 
 % 
-% Inputs:
+% INPUT arguments:
 % 
-% elan = Matlab structure with ELAN data 
+% elan = ELAN-MATLAB structure 
 % tier = name of tier 
 % abs = results either in absolute times (0) or proportion of total annotated
 % (1) or proportion of total time in tier (2) (default = 1) 
 % 
-% Output: 
+% OUTPUT: 
 % 
 % Data structure with output.labels = annotation labels and output.times =
 % corresponding durations / proportions. 
@@ -23,12 +23,10 @@ function output = elanTotalTimes(elan, tier, abs)
 % which is a MATLAB structure produced e.g. by elanReadFile. Option 2 gives
 % the times as proportion of total duration of the tier.
 % 
-% Uses the data structure of SALEM Toolbox, so the structure needs the 
-% target tier and AnnotationValid and ElanFile tiers.
-% 
-% SALEM functions used: 
+% Built on the SALEM 0.1beta toolbox (Uni Bielefeld) 
 %
-% Tommi Himberg, BRU Aalto University - last changed 20.10.2014
+%  ~~ ELAN-MATLAB Toolbox ~~~~ github.com/tijh/ELAN-MATLAB ~~
+% Tommi Himberg, NBE / Aalto University. Last changed 13.8.2015
 
 if nargin < 2; 
     return; 
@@ -40,10 +38,8 @@ end
 
 
 tmp.data = elan.tiers.(tier); 
-tmp.AnnotationValid = elan.tiers.AnnotationValid; 
-tmp.ElanFile = elan.tiers.ElanFile;
 
-durall = tmp.AnnotationValid.duration; % duration of the whole file
+durall = elan.range(2)-elan.range(1); % duration of the whole file
 
 numannos = length(tmp.data); % number of annotations on tier
 tmp.durann = zeros(numannos, 1); % preallocate
@@ -74,25 +70,25 @@ end
 
 % variable 'labs' now has all unique labels. 
 
-output.labels = sort(labs)'; % alphabetise
+out.labels = sort(labs)'; % alphabetise
 
-uniques = length(output.labels); % how many different labels
+uniques = length(out.labels); % how many different labels
 
 
 for i = 1:uniques
     for j = 1:numannos
-        if strcmp(tmp.data(j).value, output.labels(i)) == 1;
+        if strcmp(tmp.data(j).value, out.labels(i)) == 1;
             tmp2(j,1) = tmp.data(j).duration;
         end
     end
-    output.times(i,1) = sum(tmp2);
+    out.times(i,1) = sum(tmp2);
     clear tmp2;
 end
 
 if abs == 1;
-    output.times = output.times./durann; 
+    out.times = out.times./durann; 
 elseif abs == 2; 
-    output.times = output.times./durall; 
+    out.times = out.times./durall; 
 end
 
 

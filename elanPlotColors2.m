@@ -1,4 +1,4 @@
-function elanPlotColors(elan, codes, colors, timeunit, optionaltitle)
+function elanPlotColors2(elan, codes, colors, timeunit, optionaltitle, offset)
 
 % elanPlot(elan, codes, colors, timeunit, optionaltitle)
 % 
@@ -6,7 +6,7 @@ function elanPlotColors(elan, codes, colors, timeunit, optionaltitle)
 % annotations according to their annotation value (equal annotations are
 % colored equally)
 %
-% INPUT ARGUMENTS: 
+% INPUT arguments: 
 % codes: Variable 'codes' is a container.Map structure with annotation values
 % and their keys. 
 %
@@ -29,20 +29,27 @@ function elanPlotColors(elan, codes, colors, timeunit, optionaltitle)
 % start of the elan file or slice, as set in elan.range. Choice of x-axis
 % units added.
 %
+% Change 13.8.2015: tweaked the axis positions and added annotation value
+% labels, printed in the colors they represent in the image. 
+%
 % Built on the SALEM 0.1beta toolbox (Uni Bielefeld) 
 %
 %  ~~ ELAN-MATLAB Toolbox ~~~~ github.com/tijh/ELAN-MATLAB ~~
 % Tommi Himberg, NBE / Aalto University. Last changed 13.8.2015
 
-if nargin < 4
+if nargin < 6
+    offset = 30;
+    if nargin < 4
     timeunit = 'sec'; 
+    end
 end
 
 fn=fieldnames(elan.tiers); %fieldnames = tier names
+
 gcf;
 clf;
 set(gcf,'OuterPosition');
-axes('OuterPosition',[.1  .05  .9  .9]);
+axes('OuterPosition',[.05  .05  .9  .9]);
 set(gca,'YTickLabel',[],'YTick',[],'YLim',[0.5 length(fn)+0.5]);
 hold on;
 minx = elan.range(2);% find end point of one annotation
@@ -56,6 +63,12 @@ for i=1:length(fn) %find first annotation on timeline for all tiers
 	end;
 end;
 
+% label colors 
+for i = 1:length(fn)
+    val{i} = elanValues(elan, fn{i}); 
+end
+
+%%
 annocolors = codes; % the container.Map structure with values and keys
 
 % plot each tier
@@ -80,14 +93,12 @@ colmap = colors; % this variable contains the list of color codes.
                     'FaceColor',thiscolor,'Curvature',0.2);
 			end;
 		end;
-
-        
-    
-    % text per line (name of tier + number of different annotations)
+           
+    % text per line (name of tier)
 	tiertext = strcat(fn{i});
 
 	try
-		text(elan.range(1)-30,i,tiertext,'HorizontalAlignment','right','Interpreter','none','Margin',10,'FontSize',14);
+		text(elan.range(1)-offset,i,tiertext,'HorizontalAlignment','right','Interpreter','none','Margin',10,'FontSize',14);
 	%	text(maxx,i,tiertext2,'HorizontalAlignment','left','Interpreter','none','Margin',20,'FontSize',8);
  	catch message
  		error('No annotations in tier. Did you save your elan file before importing it?');
@@ -96,6 +107,15 @@ colmap = colors; % this variable contains the list of color codes.
  		title(optionaltitle,'Interpreter','none')
  	end
 	axis([ minx maxx -inf inf ]);
+    
+    % labels
+    for k = 1:length(val{i});  
+        key = char(val{i}{k});
+        text(elan.range(2)+100, i+(0.1*length(val{i}))-(k*0.1), strcat(val{i}{k}),...
+            'HorizontalAlignment','right','Interpreter','none','Margin',10,...
+            'FontSize',14, 'Color', colmap((annocolors(key)),:)); 
+    end
+    % /labels
     
     % x-axis ticks and tick labels 
     % leave on auto if 'sec'

@@ -15,11 +15,12 @@ function out = elanSwap(elan, tier, oldval, newval)
 % 
 % out = ELAN-MATLAB structure 
 %
-% Uses the data structure of the SALEM 0.1beta toolbox. 
+% Requires: elanValues.m 
 %
-% Requires elanValues.m from ELAN-MATLAB toolbox
+% Built on the SALEM 0.1beta toolbox (Uni Bielefeld) 
 %
-% Tommi Himberg, NBE / Aalto University. Last changed 10.8.2015
+%  ~~ ELAN-MATLAB Toolbox ~~~~ github.com/tijh/ELAN-MATLAB ~~
+% Tommi Himberg, NBE / Aalto University. Last changed 13.8.2015
 
 if nargin < 4; 
     disp('Not enough input arguments: out = elanSwap(elan, tier, oldval, newval)')
