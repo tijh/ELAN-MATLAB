@@ -35,11 +35,19 @@ if isstr(oldtiers)
     end
 end
 
+% compare strings in the two sets so that if there are same (unchanged)
+% tier names, those are not removed in the end 
+
+cmp = strcmp(newtiers, oldtiers); 
+
+
 out = elan; 
 
 for i = 1:length(oldtiers)
     out.tiers.(newtiers{i}) = elan.tiers.(oldtiers{i});
-    out = rmfield(out.tiers, oldtiers{i});     
+    if cmp(i) == 0 
+        out.tiers = rmfield(out.tiers, oldtiers{i});
+    end
 end
 
 out.range = elan.range;

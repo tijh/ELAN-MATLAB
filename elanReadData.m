@@ -120,7 +120,7 @@ end
 
 %% parse linked files if there is only one eaf file in argin
 if (exist('bool_several','var'))
-	fprintf('if you intended to use the timeseries support (you can ignore this warning otherwise):\n -- note that working with serveral files _and_ linked files is not yet supported\n -- ignoring linked files if there are any \n');
+	%fprintf('if you intended to use the timeseries support (you can ignore this warning otherwise):\n -- note that working with serveral files _and_ linked files is not yet supported\n -- ignoring linked files if there are any \n');
 else
 	% media files (videos)
 	mediaFilesElem = xDoc.getElementsByTagName('MEDIA_DESCRIPTOR');
