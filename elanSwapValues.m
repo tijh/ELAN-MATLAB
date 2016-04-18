@@ -1,8 +1,8 @@
-function out = elanSwap(elan, tier, oldval, newval)
+function out = elanSwapValues(elan, tier, oldval, newval)
 
 % Replace annotation values in ELAN files 
 %
-% out = elanSwap(elan, tier, oldval, newval) 
+% out = elanSwapValues(elan, tier, oldval, newval) 
 %
 % INPUT arguments: 
 % 
@@ -20,7 +20,7 @@ function out = elanSwap(elan, tier, oldval, newval)
 % Built on the SALEM 0.1beta toolbox (Uni Bielefeld) 
 %
 %  ~~ ELAN-MATLAB Toolbox ~~~~ github.com/tijh/ELAN-MATLAB ~~
-% Tommi Himberg, NBE / Aalto University. Last changed 13.8.2015
+% Tommi Himberg, NBE / Aalto University. Last changed 13.4.2016
 
 if nargin < 4; 
     disp('Not enough input arguments: out = elanSwap(elan, tier, oldval, newval)')
