@@ -33,7 +33,7 @@ Analysing change and interaction in music therapy
 ## Access info 
 Dataset stored in tijh.github.io/ELAN-MATLAB, along with MATLAB tools to process, analyse and visualise it. 
 
-Research article (open access) available online at http://dx.doi.org/10.1098/rstb.2015.0374 Overview of the annotation protocol used to generate these annotations from video data are in the Supplementary data at http://dx.doi.org/10.1098/rstb.2015.0374
+Research article (open access) available online at http://dx.doi.org/10.1098/rstb.2015.0374 Overview of the annotation protocol used to generate these annotations from video data are in the article's Supplementary data, also accessible via the link above. 
 
 ## License 
 CC-BY 4.0
@@ -105,4 +105,5 @@ What type of music is being played/sang; whether it is an existing song or a rhy
   * FI = free improvisation 
   * TLK = talking 
   * NTH = nothing (silence) 
+
 In the paper we grouped these into two categories: SONG (containing HS, GS, NR, INS) and FI; we excluded TLK and NTH from the analysis. 
