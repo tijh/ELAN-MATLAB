@@ -63,11 +63,11 @@ This dataset contains annotations from 10 music therapy sessions from five clien
 Details of how each behaviour and value were characterised and demarcated from each other can be found in the supplementary materials of the journal article. 
 
 #### Individual pulse tiers
-R = regular pulse 
-IR = irregular pulse 
-NPM = non-pulsed musical sounds 
-NMS = non-musical sounds 
-S = silence 
+  R = regular pulse 
+  IR = irregular pulse 
+  NPM = non-pulsed musical sounds 
+  NMS = non-musical sounds 
+  S = silence 
 
 #### Shared_Pulse 
 Y = yes 
