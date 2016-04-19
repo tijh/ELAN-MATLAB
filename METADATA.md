@@ -63,47 +63,46 @@ This dataset contains annotations from 10 music therapy sessions from five clien
 Details of how each behaviour and value were characterised and demarcated from each other can be found in the supplementary materials of the journal article. 
 
 #### Individual pulse tiers
-  R = regular pulse 
-  IR = irregular pulse 
-  NPM = non-pulsed musical sounds 
-  NMS = non-musical sounds 
-  S = silence 
+  * R = regular pulse 
+  * IR = irregular pulse 
+  * NPM = non-pulsed musical sounds 
+  * NMS = non-musical sounds 
+  * S = silence 
 
 #### Shared_Pulse 
-Y = yes 
-N = no
+  * Y = yes 
+  * N = no
 
 #### Individual facing tiers 
-CF = client is facing the therapist 
-CNF = client not facing the therapist 
-CO = client out of view 
-MtF = therapist is facing the client
-MtNF = therapist not facing the client 
-MtO = therapist out of view 
+  * CF = client is facing the therapist 
+  * CNF = client not facing the therapist 
+  * CO = client out of view 
+  * MtF = therapist is facing the client
+  * MtNF = therapist not facing the client 
+  * MtO = therapist out of view 
 
 #### Mutual_Facing 
 For each timepoint, a linear combination of the individual facing tiers was calculated. If the therapist and client share the same state, the annotation value is simply F = facing, NF = not facing and O = out of view. If the two have different states, the annotation value is a concatenation of the two values occurring at the moment, for example: 
-CFMtNF = client is facing the therapist but the therapist is not facing the client 
-COMtF = client is out of view, therapist is facing the client 
+  * CFMtNF = client is facing the therapist but the therapist is not facing the client 
+  * COMtF = client is out of view, therapist is facing the client 
 
 #### Individual travelling tiers
-CT = client is travelling (moving around in the room) 
-CNT = client is still 
-CO = client out of view 
-MtT, MtNT, MtO = same for the therapist 
+  * CT = client is travelling (moving around in the room) 
+  * CNT = client is still 
+  * CO = client out of view 
+  * MtT, MtNT, MtO = same for the therapist 
 
 #### Both Travelling 
 This tier is generated, and the values named like in Mutual_Facing, for matching simple values T = Travelling, NT = Not travelling, and for non-matching states for example: 
-CTMtNT = client is moving, therapist is still 
+  * CTMtNT = client is moving, therapist is still 
 
 #### Musictype 
 What type of music is being played/sang; whether it is an existing song or a rhyme, or whether it is free improvisation. The songs are further divided into different types, as some of them (such as the "hello song" and "goodbye song") repeat from session to session and also across therapists and clients.  
-HS = hello song 
-GS = goodbye song 
-NR = nursery rhyme 
-INS = instrumental
-FI = free improvisation 
-TLK = talking 
-NTH = nothing (silence) 
-
+  * HS = hello song 
+  * GS = goodbye song 
+  * NR = nursery rhyme 
+  * INS = instrumental
+  * FI = free improvisation 
+  * TLK = talking 
+  * NTH = nothing (silence) 
 In the paper we grouped these into two categories: SONG (containing HS, GS, NR, INS) and FI; we excluded TLK and NTH from the analysis. 
