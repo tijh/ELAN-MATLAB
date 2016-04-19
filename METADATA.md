@@ -18,21 +18,20 @@ music therapy, interaction, communication, video analysis, annotation, MATLAB, E
 music therapy
 
 ## Authors 
-Dr. Neta Spiro, director of research, Nordoff-Robbins, London UK 
-Dr. Tommi Himberg, post-doctoral researcher, Aalto University, Espoo, Finland
+Dr. Neta Spiro, Head of research, Nordoff-Robbins, London, UK, Member of Faculty of Music, University of Cambridge, UK. 
+Dr. Tommi Himberg, post-doctoral researcher, Department of Neuroscience and Biomedical Engineering, Aalto University, Espoo, Finland
 
 ## Contributors 
-Camilla Farrant 
-Sarah Boyce
+Neta Spiro, Tommi Himberg, Camilla Farrant and Sarah Boyce
 
 ## Distributor 
-Nordoff-Robbins Research
+Nordoff-Robbins, London, UK.
 
 ## Project 
-Analysing change and interaction in Music therapy
+Analysing change and interaction in music therapy
 
 ## Access info 
-Dataset stored in tijh.github.io/ELAN-MATLAB, along with MATLAB tools to process, analyse and visualise them. 
+Dataset stored in tijh.github.io/ELAN-MATLAB, along with MATLAB tools to process, analyse and visualise it. 
 
 Research article (open access) available online at http://dx.doi.org/10.1098/rstb.2015.0374 Overview of the annotation protocol used to generate these annotations from video data are in the Supplementary data at http://dx.doi.org/10.1098/rstb.2015.0374
 
@@ -40,7 +39,7 @@ Research article (open access) available online at http://dx.doi.org/10.1098/rst
 CC-BY 4.0
 
 ## Copyright notice 
-When using the data or the toolbox, please cite Spiro N, Himberg T. 2016 Analysing change in music therapy interactions of children with communication difficulties. Phil. Trans. R. Soc. B 371: 20150374.
+When using the data or the toolbox, please cite Spiro N. & Himberg T. (2016). Analysing change in music therapy interactions of children with communication difficulties. Phil. Trans. R. Soc. B 371: 20150374.
 
 # Data structures and annotation codes
 Zipped file containing 10 MAT-files (MATLAB. Mathworks Ltd.).
@@ -57,7 +56,7 @@ When the data is read into MATLAB, a hierarchical data structure is generated. T
 
 ## Data 
 
-This dataset contains annotations from 10 trials from five client–therapist pairs. Each trial has 10 annotation tiers: C_Pulse (client's pulse type), MT_Pulse (therapist's pulse type), Shared_Pulse (linear combination of the two pulse tiers), C_Facing_MT (whether the client faces the therapist or not), MT_Facing_C (vice versa), Mutual_Facing (linear combination of the facing tiers), C_Travelling (whether the client is moving or not), MT_Travelling (same for the therapist), Both_Travelling (linear combination of the travelling tiers), Musictype (what type of music is being played). 
+This dataset contains annotations from 10 music therapy sessions from five client–therapist pairs. Each trial has 10 annotation tiers: C_Pulse (client's pulse type), MT_Pulse (therapist's pulse type), Shared_Pulse (linear combination of the two pulse tiers), C_Facing_MT (whether the client faces the therapist or not), MT_Facing_C (vice versa), Mutual_Facing (linear combination of the facing tiers), C_Travelling (whether the client is moving or not), MT_Travelling (same for the therapist), Both_Travelling (linear combination of the travelling tiers), Musictype (what type of music is being played). 
 
 ## Annotation values
 
@@ -83,7 +82,7 @@ MtNF = therapist not facing the client
 MtO = therapist out of view 
 
 #### Mutual_Facing 
-- for each timepoint, a linear combination of the previous was calculated. If the therapist and client share the same state, the annotation value is simply F = facing, NF = not facing and O = out of view. If the two have different states, the annotation value is a concatenation of the two values occurring at the moment, for example 
+For each timepoint, a linear combination of the individual facing tiers was calculated. If the therapist and client share the same state, the annotation value is simply F = facing, NF = not facing and O = out of view. If the two have different states, the annotation value is a concatenation of the two values occurring at the moment, for example: 
 CFMtNF = client is facing the therapist but the therapist is not facing the client 
 COMtF = client is out of view, therapist is facing the client 
 
@@ -94,12 +93,17 @@ CO = client out of view
 MtT, MtNT, MtO = same for the therapist 
 
 #### Both Travelling 
-- this tier is generated, and the values named like in Mutual_Facing, for simple values T = Travelling, NT = Not travelling, and for non-matching states for example CTMtNT = client is moving, therapist is still 
+This tier is generated, and the values named like in Mutual_Facing, for matching simple values T = Travelling, NT = Not travelling, and for non-matching states for example: 
+CTMtNT = client is moving, therapist is still 
 
 #### Musictype 
-- what type of music is being played/sang; whether it is an existing song or a rhyme, or whether it is free improvisation. The songs are further divided into different types, as some of them (such as the "hello song" and "goodbye song") repeat from session to session and also across therapists and clients.  
+What type of music is being played/sang; whether it is an existing song or a rhyme, or whether it is free improvisation. The songs are further divided into different types, as some of them (such as the "hello song" and "goodbye song") repeat from session to session and also across therapists and clients.  
 HS = hello song 
 GS = goodbye song 
 NR = nursery rhyme 
 INS = instrumental
 FI = free improvisation 
+TLK = talking 
+NTH = nothing (silence) 
+
+In the paper we grouped these into two categories: SONG (containing HS, GS, NR, INS) and FI; we excluded TLK and NTH from the analysis. 
