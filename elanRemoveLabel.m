@@ -1,6 +1,6 @@
 function elan2 = elanRemoveLabel(elan, tier, label)  
 
-% Removes vertail label values from a tier 
+% Removes annotations with given label from a tier. 
 %
 % elan2 = elanRemoveLabel(elan, label) 
 %
@@ -8,17 +8,26 @@ function elan2 = elanRemoveLabel(elan, tier, label)
 % 
 % elan: elan data structure 
 % tier: tier from which the value labels are removed from
-% label: label value or values to be removed from the data structure 
+% label: label to be removed from the data structure 
 % 
 % OUTPUT: 
 % elan2: elan data structure with given labels removed from the given tier
+% 
+% For example, if you have a tier 'colours' with annotations of 'blue', 
+% 'green' and 'red', then 
 %
-% WORK IN PROGRESS!!
+% elan2 = elanRemoveLabel(elan, 'colours', {'blue';'red'}); 
+%
+% will produce elan2.colours tier that only has those annotations that had 
+% the value 'green' in them. Otherwise elan2 contains all the same data as 
+% elan.  
+%
+% To remove empty values, just put {''} as value (with curly brackets).
 %
 % Built on the SALEM 0.1beta toolbox (Uni Bielefeld) 
 %
 %  ~~ ELAN-MATLAB Toolbox ~~~~ github.com/tijh/ELAN-MATLAB ~~
-% Tommi Himberg, NBE / Aalto University. Last changed 13.8.2015 
+% Tommi Himberg, NBE / Aalto University. Last changed 15.9.2016 
 
 if nargin < 3;
     disp('Too few input arguments:')
@@ -26,24 +35,16 @@ if nargin < 3;
 return;
 end 
 
-% count the total number of labels
-numlab = length(elan.tiers.(tier)) 
+% how many different labels to remove 
+rem = size(label, 1);
+elan2 = elan; % copy over all the other tiers etc. 
 
-%remlab = length(label); % how many labels to remove
+for i = 1:rem; % run this for all labels to remove 
 
-elan2 = elan; 
-
-%elan2 = rmfield(elan2.tiers, tier) % remove the one to be changed 
-
-for i = 1:numlab
-    if strcmp('elan.tiers.(tier)(i).value', label) == 1; 
-        elan2 = rmfield(elan.tiers.(tier)(i).; 
+    for j = 1:length(elan2.tiers.(tier))
+        ok(j,1) = strcmp(elan2.tiers.(tier)(j).value, label{i}); % lists the ones that match the label
     end
+
+    elan2.tiers.(tier) = elan2.tiers.(tier)(ok == 0); % leaves only those that don't match label
+    clear ok;     
 end
-
-
-
-        
-        
-        
-        
