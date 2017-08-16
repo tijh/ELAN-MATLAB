@@ -1,51 +1,46 @@
-function elanPlotColors2(elan, codes, colors, timeunit, optionaltitle, offset)
+function elanPlotColors2(elan, tier, colpars, timeunit, optionaltitle, labels)
 
-% elanPlot(elan, codes, colors, timeunit, optionaltitle)
+% elanPlot(elan, colpars, timeunit, optionaltitle, labels))
 % 
 % Plots annotations of elan files tier-sorted on a time line and colors the
 % annotations according to their annotation value (equal annotations are
 % colored equally)
 %
 % INPUT arguments: 
-% codes: Variable 'codes' is a container.Map structure with annotation values
-% and their keys. 
 %
-% colors: Variable 'colors' is an array with color codes (n,3), from which 
-% the colors are picked to represent annotations. 
-%
-% timeunit: x-axis units; 'sec' (default) or 'min'  
-%
+% elan = the ELAN-MATLAB structure to plot 
+% tier = the tier or tiers to plot, put 'all' to plot all tiers
+% colpars = colour parameter structure produced by elanAssociate
+% timeunit =  x-axis units; 'sec' (default) or 'min'  
 % optionaltitle: title of the figure (string). If left blank, figure will 
 % have no title. 
+% labels = 0 don't print labels, 1 print the values in associated colors in the figure. 
 %
-% Example: elanPlotColor(data, associations, colourlist, [], 'My plot')
+% Example: elanPlotColor(data, 'C_Facing_MT', colp, [], 'My plot', 0)
 % - to set a plot title while using default timeunits of seconds.
 %
-% Change 31.12.2014: AnnotationValid-tier no longer needed, now uses the
-% start and stop values from the field elan.range instead (produced by
-% newer version of elanRead). 
-%
-% Change 18.3.2015: x-axis no longer starts from 0, rather from
-% start of the elan file or slice, as set in elan.range. Choice of x-axis
-% units added.
-%
-% Change 13.8.2015: tweaked the axis positions and added annotation value
-% labels, printed in the colors they represent in the image. 
+% Change 26.8.2015: reworked the input params. 
 %
 % Built on the SALEM 0.1beta toolbox (Uni Bielefeld) 
 %
 %  ~~ ELAN-MATLAB Toolbox ~~~~ github.com/tijh/ELAN-MATLAB ~~
-% Tommi Himberg, NBE / Aalto University. Last changed 13.8.2015
+% Tommi Himberg, NBE / Aalto University. Last changed 26.8.2015
 
 if nargin < 6
-    offset = 30;
+    labels = 0;
     if nargin < 4
     timeunit = 'sec'; 
     end
 end
 
-fn=fieldnames(elan.tiers); %fieldnames = tier names
 
+if strcmp(tier, 'all') == 1; 
+    fn=fieldnames(elan.tiers); %fieldnames = tier names
+else fn = tier; 
+end
+
+    
+    
 gcf;
 clf;
 set(gcf,'OuterPosition');
@@ -69,7 +64,9 @@ for i = 1:length(fn)
 end
 
 %%
-annocolors = codes; % the container.Map structure with values and keys
+
+
+annocolors = contain_r(colpars.values); % makes container.Map structure with values and keys
 
 % plot each tier
 for i=1:length(fn) % each tier
@@ -78,7 +75,7 @@ for i=1:length(fn) % each tier
 	y=i-0.4;% 'line' in plot where tier will be plotted
 	h=0.8; % height for tiers in plot
    
-colmap = colors; % this variable contains the list of color codes.
+colmap = colpars.colors; % this variable contains the list of color codes.
 
 		% plot every annotation in tier
 		for j=1:lenf; % all annotations in tier
@@ -98,8 +95,7 @@ colmap = colors; % this variable contains the list of color codes.
 	tiertext = strcat(fn{i});
 
 	try
-		text(elan.range(1)-offset,i,tiertext,'HorizontalAlignment','right','Interpreter','none','Margin',10,'FontSize',14);
-	%	text(maxx,i,tiertext2,'HorizontalAlignment','left','Interpreter','none','Margin',20,'FontSize',8);
+		text(elan.range(1)-20,i,tiertext,'HorizontalAlignment','right','Interpreter','none','Margin',10,'FontSize',14);
  	catch message
  		error('No annotations in tier. Did you save your elan file before importing it?');
  	end%try
@@ -109,12 +105,17 @@ colmap = colors; % this variable contains the list of color codes.
 	axis([ minx maxx -inf inf ]);
     
     % labels
+    if labels == 1; 
+        
     for k = 1:length(val{i});  
         key = char(val{i}{k});
-        text(elan.range(2)+100, i+(0.1*length(val{i}))-(k*0.1), strcat(val{i}{k}),...
+        text(elan.range(2)+30, i+(0.1*length(val{i}))-(k*0.1), strcat(val{i}{k}),...
             'HorizontalAlignment','right','Interpreter','none','Margin',10,...
             'FontSize',14, 'Color', colmap((annocolors(key)),:)); 
     end
+    
+    end 
+    
     % /labels
     
     % x-axis ticks and tick labels 
@@ -145,6 +146,16 @@ colmap = colors; % this variable contains the list of color codes.
         set(get(gca,'XLabel'),'String','seconds');
         
     end
-    
+    set(gca, 'FontSize', 16); % title and x-label
     hold off;
 end;
+
+%%
+function out = contain_r(in); 
+
+out = containers.Map('KeyType', 'char', 'ValueType', 'int32');
+
+for i = 1:length(in)
+    out(in{i}) = i; 
+end
+
